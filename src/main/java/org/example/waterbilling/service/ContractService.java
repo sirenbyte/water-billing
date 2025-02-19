@@ -26,7 +26,7 @@ public class ContractService {
 
     public ResponseEntity<?> getTableColumns(){
         List<Map<String, String>> result = AnnotationScript.getFieldsFromClass(Contract.class);
-        result.add(Map.of("fullName","ФИО"));
+        result.add(Map.of("accessor","fullName","title","ФИО"));
         return ResponseEntity.ok(result);
     }
 

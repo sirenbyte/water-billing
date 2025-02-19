@@ -3,6 +3,7 @@ package org.example.waterbilling.controller;
 import lombok.AllArgsConstructor;
 import org.example.waterbilling.model.dto.ReportDynamicDto;
 import org.example.waterbilling.service.ContractService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,12 @@ public class ContractController {
     }
 
     @GetMapping("/table-data")
-    public ResponseEntity<?> getTableData(@RequestBody ReportDynamicDto dto){
-        return contractService.getTableData(dto);
+    public ResponseEntity<?> getTableData(@RequestParam(value = "reportId", required = false) String reportId,
+                                          @RequestParam(value = "query", required = false) String query,
+                                          @RequestParam(value = "sort", required = false) String sort,
+                                          @RequestParam(value = "fields", required = false) String fields,
+                                          Pageable pageable){
+        return contractService.getTableData(ReportDynamicDto.builder().build());
     }
 
     @PostMapping("/action")

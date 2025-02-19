@@ -3,11 +3,9 @@ package org.example.waterbilling.controller;
 import lombok.AllArgsConstructor;
 import org.example.waterbilling.model.dto.ReportDynamicDto;
 import org.example.waterbilling.service.PersonalAccountService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/personal-account")
@@ -21,7 +19,11 @@ public class PersonalAccountController {
     }
 
     @GetMapping("/table-data")
-    public ResponseEntity<?> getTableData(@RequestBody ReportDynamicDto dto){
-        return personalAccountService.getTableData(dto);
+    public ResponseEntity<?> getTableData(@RequestParam(value = "reportId", required = false) String reportId,
+                                          @RequestParam(value = "query", required = false) String query,
+                                          @RequestParam(value = "sort", required = false) String sort,
+                                          @RequestParam(value = "fields", required = false) String fields,
+                                          Pageable pageable){
+        return personalAccountService.getTableData(ReportDynamicDto.builder().build());
     }
 }

@@ -37,7 +37,7 @@ public class StatisticService {
         Map<String,Long> user = userRepository.findAll().stream().collect(Collectors.groupingBy(User::getPosition,Collectors.counting()));
         result.put("userList",user);
 
-        return ResponseEntity.ok().body(canal);
+        return ResponseEntity.ok().body(result);
     }
 
     public ResponseEntity<?> energyForCanal(UUID id){
