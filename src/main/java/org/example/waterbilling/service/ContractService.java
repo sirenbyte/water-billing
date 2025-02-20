@@ -95,4 +95,8 @@ public class ContractService {
         contractRepository.save(contract);
         return ResponseEntity.ok(contract);
     }
+
+    public ResponseEntity<?> createContract(UUID id,Float price){
+        return null;
+    }
 }

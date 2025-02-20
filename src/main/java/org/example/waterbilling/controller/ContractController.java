@@ -45,5 +45,9 @@ public class ContractController {
         return contractService.changeTariff(contractId,tariff);
     }
 
+    @PostMapping
+    public ResponseEntity<?> create(@PathVariable UUID contractId,@RequestParam UUID canalId,@RequestParam Float tariff){
+        return contractService.changeTariff(contractId,tariff);
+    }
 }
 
