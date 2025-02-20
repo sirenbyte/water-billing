@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -68,6 +69,30 @@ public class ContractService {
         }else {
             contract.setStatus("Отказано");
         }
+        return ResponseEntity.ok(contract);
+    }
+
+    public ResponseEntity<?> getByClientId(UUID clientId){
+        List<Map> contracts = contractRepository.getContractsByUserId(clientId).stream().map(contract -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", contract.getId());
+            map.put("fullName", getFullName(contract.getUserId()));
+            map.put("canalId", getCanalName(contract.getCanalId()));
+            map.put("createdAt", contract.getCreatedAt());
+            map.put("fixedAt", contract.getFixedAt());
+            map.put("status", contract.getStatus());
+            map.put("tariff", contract.getTariff());
+            map.put("price", contract.getPrice());
+            map.put("value", contract.getValue());
+            return map;
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(contracts);
+    }
+
+    public ResponseEntity<?> changeTariff(UUID id,Float tariff){
+        Contract contract = contractRepository.findById(id).orElse(null);
+        contract.setTariff(String.valueOf(tariff));
+        contractRepository.save(contract);
         return ResponseEntity.ok(contract);
     }
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/contract")
 @AllArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 36000)
 public class ContractController {
     private final ContractService contractService;
 
@@ -34,4 +34,16 @@ public class ContractController {
     public ResponseEntity<?> action(@RequestParam UUID contractId,@RequestParam String action){
         return contractService.action(contractId,action);
     }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<?> getContractsByClientId(@PathVariable UUID clientId){
+        return contractService.getByClientId(clientId);
+    }
+
+    @PostMapping("/change-tariff/{contractId}")
+    public ResponseEntity<?> changeTariff(@PathVariable UUID contractId,@RequestParam Float tariff){
+        return contractService.changeTariff(contractId,tariff);
+    }
+
 }
+

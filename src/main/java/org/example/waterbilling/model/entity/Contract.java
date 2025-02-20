@@ -48,5 +48,8 @@ public class Contract {
     @FiledTitle("Тариф")
     private String tariff;
 
+    @FiledTitle("Объем")
+    private String value;
+
     private String price;
 }
