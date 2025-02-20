@@ -12,7 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/contract")
 @AllArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 36000)
+@CrossOrigin(origins = "*", maxAge = 36000,allowCredentials = "false")
 public class ContractController {
     private final ContractService contractService;
 

@@ -10,7 +10,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/statistic")
 @AllArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 36000)
+@CrossOrigin(origins = "*", maxAge = 36000,allowCredentials = "false")
 public class StatisticController {
     private final StatisticService statisticService;
 

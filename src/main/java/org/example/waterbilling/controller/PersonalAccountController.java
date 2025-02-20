@@ -12,7 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/personal-account")
 @AllArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 36000)
+@CrossOrigin(origins = "*", maxAge = 36000,allowCredentials = "false")
 public class PersonalAccountController {
     private final PersonalAccountService personalAccountService;
 

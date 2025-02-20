@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 36000)
+@CrossOrigin(origins = "*", maxAge = 36000,allowCredentials = "false")
 public class AuthController {
     private final AuthService authService;
 
