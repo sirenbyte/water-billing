@@ -12,6 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/contract")
 @AllArgsConstructor
+@CrossOrigin
 public class ContractController {
     private final ContractService contractService;
 

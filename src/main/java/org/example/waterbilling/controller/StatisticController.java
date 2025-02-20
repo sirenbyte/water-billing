@@ -10,6 +10,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/statistic")
 @AllArgsConstructor
+@CrossOrigin
 public class StatisticController {
     private final StatisticService statisticService;
 

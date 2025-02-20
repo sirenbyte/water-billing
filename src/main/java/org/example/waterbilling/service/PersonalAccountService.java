@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -41,5 +42,22 @@ public class PersonalAccountService {
                     return map;
                 }));
 
+    }
+
+    public ResponseEntity<?> getById(UUID id){
+        User user = userRepository.findById(id).orElse(null);
+        Map<String,String> map = new HashMap<>();
+        map.put("fullName", user.getFirstname()+" "+user.getLastname()+" "+user.getFathersname());
+        map.put("phoneNumber", user.getPhoneNumber());
+        map.put("login", user.getLogin());
+        map.put("email", user.getEmail());
+        map.put("personalAccountNumber", user.getPersonalAccountNumber());
+        map.put("status", user.getStatus());
+        map.put("position", user.getPosition());
+        map.put("createdAt", String.valueOf(user.getCreatedAt()));
+        map.put("organization", user.getOrganization());
+        map.put("iin", user.getIin());
+        map.put("bin", user.getBin());
+        return ResponseEntity.ok(map);
     }
 }
