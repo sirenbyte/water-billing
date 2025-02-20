@@ -28,6 +28,7 @@ public class PersonalAccountService {
         return ResponseEntity.ok(userRepository.findAll().stream()
                 .map(user -> {
                     Map<String, Object> map = new HashMap<>();
+                    map.put("id",user.getId());
                     map.put("fullName", user.getFirstname()+" "+user.getLastname()+" "+user.getFathersname());
                     map.put("phoneNumber", user.getPhoneNumber());
                     map.put("login", user.getLogin());
