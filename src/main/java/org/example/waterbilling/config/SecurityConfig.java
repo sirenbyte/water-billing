@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers(
+                        "/v3/**", "/swagger-ui.html",
                         "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs",
                         "/v3/api-docs", "/webjars/**", "/configuration/ui", "/configuration/security"
                 ).permitAll() // ✅ Разрешаем Swagger UI
