@@ -55,13 +55,13 @@ public class ContractController {
     }
 
     @PostMapping("/pay")
-    public ResponseEntity<?> pay(@RequestParam UUID canalId, @RequestBody CardDto dto){
-        return contractService.pay(canalId,dto);
+    public ResponseEntity<?> pay(@RequestParam UUID contract, @RequestBody CardDto dto){
+        return contractService.pay(contract,dto);
     }
 
     @GetMapping("/receipt")
-    public ResponseEntity<?> pay(@RequestParam UUID canalId) throws IOException {
-        return contractService.generateReceipt(canalId);
+    public ResponseEntity<?> pay(@RequestParam UUID contract) throws IOException {
+        return contractService.generateReceipt(contract);
     }
 }
 
