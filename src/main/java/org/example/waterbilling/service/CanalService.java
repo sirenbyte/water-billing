@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,5 +19,9 @@ public class CanalService {
                 .stream()
                 .map(it -> Map.of("id", it.getId(), "name", it.getName()))
                 .collect(Collectors.toList()));
+    }
+
+    public ResponseEntity<?> getById(UUID id){
+        return ResponseEntity.ok(canalRepository.findById(id).orElse(null));
     }
 }

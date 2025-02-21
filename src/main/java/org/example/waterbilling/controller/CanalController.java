@@ -3,10 +3,9 @@ package org.example.waterbilling.controller;
 import lombok.AllArgsConstructor;
 import org.example.waterbilling.service.CanalService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/canal")
@@ -18,5 +17,10 @@ public class CanalController {
     @GetMapping
     public ResponseEntity<?> getAll(){
         return canalService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    private ResponseEntity<?> getById(@PathVariable UUID id){
+        return canalService.getById(id);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.waterbilling.service;
 
 import lombok.AllArgsConstructor;
+import org.example.waterbilling.model.dto.CardDto;
 import org.example.waterbilling.model.dto.ReportDynamicDto;
 import org.example.waterbilling.model.entity.Canal;
 import org.example.waterbilling.model.entity.Contract;
@@ -10,6 +11,7 @@ import org.example.waterbilling.repository.ContractRepository;
 import org.example.waterbilling.repository.UserRepository;
 import org.example.waterbilling.service.script.AnnotationScript;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -40,7 +42,8 @@ public class ContractService {
                     map.put("canalId", getCanalName(contract.getCanalId()));
                     map.put("createdAt", contract.getCreatedAt());
                     map.put("fixedAt", contract.getFixedAt());
-                    map.put("status", contract.getStatus());
+                    map.put("payStatus", contract.getPayStatus());
+                    map.put("waterStatus", contract.getWaterStatus());
                     map.put("tariff", contract.getTariff());
                     map.put("price", contract.getPrice());
                     return map;
@@ -65,9 +68,9 @@ public class ContractService {
     public ResponseEntity<?> action(UUID id, String action){
         Contract contract = contractRepository.findById(id).orElse(null);
         if(action.equals("start")){
-            contract.setStatus("Успешно");
+            contract.setWaterStatus("Успешно");
         }else {
-            contract.setStatus("Отказано");
+            contract.setWaterStatus("Отказано");
         }
         return ResponseEntity.ok(contract);
     }
@@ -80,7 +83,8 @@ public class ContractService {
             map.put("canalId", getCanalName(contract.getCanalId()));
             map.put("createdAt", contract.getCreatedAt());
             map.put("fixedAt", contract.getFixedAt());
-            map.put("status", contract.getStatus());
+            map.put("payStatus", contract.getPayStatus());
+            map.put("waterStatus", contract.getWaterStatus());
             map.put("tariff", contract.getTariff());
             map.put("price", contract.getPrice());
             map.put("value", contract.getValue());
@@ -96,7 +100,18 @@ public class ContractService {
         return ResponseEntity.ok(contract);
     }
 
-    public ResponseEntity<?> createContract(UUID id,Float price){
-        return null;
+    public ResponseEntity<?> createContract(UUID id,Float value){
+        Contract contract = new Contract();
+        contract.setValue(String.valueOf(value));
+        contract.setCanalId(id);
+        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+        contract.setUserId(userRepository.findByEmail(login).getId());
+        return ResponseEntity.ok(contractRepository.save(contract));
+    }
+
+    public ResponseEntity<?> pay(UUID id, CardDto dto){
+        Contract contract = contractRepository.findById(id).orElse(null);
+        contract.setPayStatus("Оплачено");
+        return ResponseEntity.ok(contract);
     }
 }

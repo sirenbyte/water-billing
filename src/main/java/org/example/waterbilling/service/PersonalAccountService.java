@@ -31,7 +31,6 @@ public class PersonalAccountService {
                     map.put("id",user.getId());
                     map.put("fullName", user.getFirstname()+" "+user.getLastname()+" "+user.getFathersname());
                     map.put("phoneNumber", user.getPhoneNumber());
-                    map.put("login", user.getLogin());
                     map.put("email", user.getEmail());
                     map.put("personalAccountNumber", user.getPersonalAccountNumber());
                     map.put("status", user.getStatus());
@@ -50,7 +49,6 @@ public class PersonalAccountService {
         Map<String,String> map = new HashMap<>();
         map.put("fullName", user.getFirstname()+" "+user.getLastname()+" "+user.getFathersname());
         map.put("phoneNumber", user.getPhoneNumber());
-        map.put("login", user.getLogin());
         map.put("email", user.getEmail());
         map.put("personalAccountNumber", user.getPersonalAccountNumber());
         map.put("status", user.getStatus());

@@ -17,9 +17,4 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody AuthRequest loginRequest) {
         return authService.generateToken(loginRequest);
     }
-
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestParam String refreshToken) {
-        return authService.refreshToken(refreshToken);
-    }
 }

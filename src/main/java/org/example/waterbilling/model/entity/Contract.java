@@ -42,8 +42,11 @@ public class Contract {
     @Column(name = "fixed_at")
     private LocalDateTime fixedAt;
 
-    @FiledTitle("Статус")
-    private String status;
+    @FiledTitle("Статус подачи воды")
+    private String waterStatus;
+
+    @FiledTitle("Статус оплаты")
+    private String payStatus;
 
     @FiledTitle("Тариф")
     private String tariff;

@@ -37,10 +37,6 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @FiledTitle("Логин")
-    @Column(name = "login")
-    private String login;
-
     @FiledTitle("Почта")
     @Column(name = "email")
     private String email;
@@ -69,12 +65,7 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToMany
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
+    private String role;
 
     @FiledTitle("Имя организаций")
     private String organization;

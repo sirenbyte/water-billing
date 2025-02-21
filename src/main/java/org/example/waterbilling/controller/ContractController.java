@@ -1,7 +1,10 @@
 package org.example.waterbilling.controller;
 
 import lombok.AllArgsConstructor;
+import org.example.waterbilling.model.dto.CardDto;
 import org.example.waterbilling.model.dto.ReportDynamicDto;
+import org.example.waterbilling.model.entity.Canal;
+import org.example.waterbilling.model.entity.Contract;
 import org.example.waterbilling.service.ContractService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +49,13 @@ public class ContractController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@PathVariable UUID contractId,@RequestParam UUID canalId,@RequestParam Float tariff){
-        return contractService.changeTariff(contractId,tariff);
+    public ResponseEntity<?> create(@RequestParam UUID canalId, @RequestParam Float value){
+        return contractService.createContract(canalId,value);
+    }
+
+    @PostMapping("/pay")
+    public ResponseEntity<?> pay(@RequestParam UUID canalId, @RequestBody CardDto dto){
+        return contractService.pay(canalId,dto);
     }
 }
 

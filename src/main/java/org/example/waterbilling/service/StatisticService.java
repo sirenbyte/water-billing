@@ -34,7 +34,7 @@ public class StatisticService {
         canals.put("canalTotal",canal.size());
         result.put("canals",canals);
 
-        Map<String,Long> user = userRepository.findAll().stream().collect(Collectors.groupingBy(User::getPosition,Collectors.counting()));
+        Map<String,Long> user = userRepository.findAll().stream().filter(it->it.getPosition()!=null).collect(Collectors.groupingBy(User::getPosition,Collectors.counting()));
         result.put("userList",user);
 
         return ResponseEntity.ok().body(result);
