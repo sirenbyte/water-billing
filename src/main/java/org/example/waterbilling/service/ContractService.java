@@ -1,5 +1,9 @@
 package org.example.waterbilling.service;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import lombok.AllArgsConstructor;
 import org.example.waterbilling.model.dto.CardDto;
 import org.example.waterbilling.model.dto.ReportDynamicDto;
@@ -11,9 +15,13 @@ import org.example.waterbilling.repository.ContractRepository;
 import org.example.waterbilling.repository.UserRepository;
 import org.example.waterbilling.service.script.AnnotationScript;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +34,7 @@ public class ContractService {
     private final ContractRepository contractRepository;
     private final UserRepository userRepository;
     private final CanalRepository canalRepository;
+    private final MediaFileService mediaFileService;
 
     public ResponseEntity<?> getTableColumns(){
         List<Map<String, String>> result = AnnotationScript.getFieldsFromClass(Contract.class);
@@ -113,5 +122,28 @@ public class ContractService {
         Contract contract = contractRepository.findById(id).orElse(null);
         contract.setPayStatus("Оплачено");
         return ResponseEntity.ok(contract);
+    }
+
+    public ResponseEntity<?> generateReceipt(UUID contractId) throws IOException {
+        Contract contract = contractRepository.findById(contractId).orElseThrow(()->new RuntimeException("Contract not found"));
+        User user = userRepository.findById(contract.getUserId()).orElse(null);
+        Canal canal = canalRepository.findById(contract.getCanalId()).orElse(null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outputStream));
+        Document document = new Document(pdfDoc);
+
+        document.add(new Paragraph("Фискальный чек"));
+        document.add(new Paragraph("ID: " + contractId));
+        document.add(new Paragraph("ФИО: " + user.getFirstname() + " " + user.getLastname()));
+        document.add(new Paragraph("Канал: " + canal.getName()));
+        document.add(new Paragraph("Дата: " + contract.getCreatedAt()));
+        document.add(new Paragraph("Тариф: " + contract.getTariff()));
+        document.add(new Paragraph("Объем: " + contract.getValue()));
+        document.add(new Paragraph("Статус оплаты: " + contract.getPayStatus()));
+        document.add(new Paragraph("Статус подачи воды: " + contract.getWaterStatus()));
+        document.add(new Paragraph("Итого: " + (Float.parseFloat(contract.getPrice())*Float.parseFloat(contract.getTariff())) + " KZT"));
+
+        document.close();
+        return ResponseEntity.ok(mediaFileService.uploadFile(new MockMultipartFile("receipt.pdf", "receipt.pdf", "application/pdf", outputStream.toByteArray())));
     }
 }

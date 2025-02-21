@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -56,6 +57,11 @@ public class ContractController {
     @PostMapping("/pay")
     public ResponseEntity<?> pay(@RequestParam UUID canalId, @RequestBody CardDto dto){
         return contractService.pay(canalId,dto);
+    }
+
+    @GetMapping("/receipt")
+    public ResponseEntity<?> pay(@RequestParam UUID canalId) throws IOException {
+        return contractService.generateReceipt(canalId);
     }
 }
 
