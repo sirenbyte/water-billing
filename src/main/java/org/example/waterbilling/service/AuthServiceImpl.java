@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +30,13 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public ResponseEntity<?> generateToken(AuthRequest dto) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(dto.getUsername()));
+        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(dto.getLogin()));
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "Неверный email или пароль"));
         }
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getLogin(), dto.getPassword()));
 
-        String jwt = jwtUtil.generateToken(dto.getUsername());
+        String jwt = jwtUtil.generateToken(dto.getLogin());
 
         Map<String, Object> response = new HashMap<>();
         response.put("token", jwt);
