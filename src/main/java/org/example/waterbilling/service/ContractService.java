@@ -144,6 +144,6 @@ public class ContractService {
         document.add(new Paragraph("Итого: " + (Float.parseFloat(contract.getPrice())*Float.parseFloat(contract.getTariff())) + " KZT"));
 
         document.close();
-        return ResponseEntity.ok(mediaFileService.uploadFile(new MockMultipartFile("receipt.pdf", "receipt.pdf", "application/pdf", outputStream.toByteArray())));
+        return mediaFileService.uploadFile(new MockMultipartFile("receipt.pdf", "receipt.pdf", "application/pdf", outputStream.toByteArray()));
     }
 }
