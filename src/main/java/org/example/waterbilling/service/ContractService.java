@@ -82,7 +82,7 @@ public class ContractService {
 
     public ResponseEntity<?> action(UUID id, String action){
         Contract contract = contractRepository.findById(id).orElse(null);
-        if(action.equals("start")){
+        if(action.equals("SUCCESS")){
             contract.setWaterStatus("Успешно");
         }else {
             contract.setWaterStatus("Отказано");
@@ -115,10 +115,10 @@ public class ContractService {
         return ResponseEntity.ok(contract);
     }
 
-    public ResponseEntity<?> createContract(UUID id,Map<String,String> value){
+    public ResponseEntity<?> createContract(UUID id,Map<String,Object> value){
         Contract contract = new Contract();
         contract.setValue(String.valueOf(value.get("value")));
-        contract.setFixedAt(LocalDateTime.parse((value.get("fixedAt"))));
+        contract.setFixedAt((LocalDateTime) value.get("fixedAt"));
         contract.setCanalId(id);
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         contract.setUserId(userRepository.findByEmail(login).getId());

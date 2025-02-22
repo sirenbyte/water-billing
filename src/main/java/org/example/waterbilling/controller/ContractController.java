@@ -2,6 +2,8 @@ package org.example.waterbilling.controller;
 
 import lombok.AllArgsConstructor;
 import org.example.waterbilling.model.dto.CardDto;
+import org.example.waterbilling.model.dto.ChangeTariffDto;
+import org.example.waterbilling.model.dto.ContractDto;
 import org.example.waterbilling.model.dto.ReportDynamicDto;
 import org.example.waterbilling.model.entity.Canal;
 import org.example.waterbilling.model.entity.Contract;
@@ -51,13 +53,13 @@ public class ContractController {
     }
 
     @PostMapping("/change-tariff/{contractId}")
-    public ResponseEntity<?> changeTariff(@PathVariable UUID contractId,@RequestBody Map<String,Object> tariff){
-        return contractService.changeTariff(contractId,tariff);
+    public ResponseEntity<?> changeTariff(@PathVariable UUID contractId,@RequestBody ChangeTariffDto tariff){
+        return contractService.changeTariff(contractId,Map.of("tariff",tariff));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestParam UUID canalId, @RequestParam Map<String,String> value){
-        return contractService.createContract(canalId,value);
+    public ResponseEntity<?> create(@RequestParam UUID canalId, @RequestParam ContractDto dto){
+        return contractService.createContract(canalId,Map.of("value",dto.getValue(),"fixedAt",dto.getFixedAt()));
     }
 
     @PostMapping("/pay")

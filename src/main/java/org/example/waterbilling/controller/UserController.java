@@ -30,6 +30,6 @@ public class UserController {
 
     @GetMapping("/types")
     public ResponseEntity<?> getTypes() {
-        return userService.userContracts();
+        return userService.types();
     }
 }
