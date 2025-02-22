@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,12 +33,15 @@ public class StatisticService {
         result.put("canals",canals);
 
         Map<String,Long> user = userRepository.findAll().stream().filter(it->it.getPosition()!=null).collect(Collectors.groupingBy(User::getPosition,Collectors.counting()));
-        Map<String,Object> map = new HashMap<>();
+
+        List<Map> list= new ArrayList<>();
         user.forEach((k,v)->{
+            Map<String,Object> map = new HashMap<>();
             map.put("name",k);
             map.put("count",v);
+            list.add(map);
         });
-        result.put("userList",map);
+        result.put("userList",list);
 
         return ResponseEntity.ok().body(result);
     }
@@ -50,11 +50,13 @@ public class StatisticService {
         Map<LocalDateTime,Float> map = energyRepository.findAllByCanal_IdAndFixedAtBetween(id, LocalDate.now().minusMonths(1).atStartOfDay(),LocalDate.now().atStartOfDay())
                .stream().collect(Collectors.toMap(Energy::getFixedAt, Energy::getTotal));
 
-        Map<String,Object> result = new HashMap<>();
+        List<Map> list = new ArrayList<>();
         map.forEach((k,v)->{
+            Map<String,Object> result = new HashMap<>();
             result.put("date",k.toString());
             result.put("value",v);
+            list.add(result);
         });
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(list);
     }
 }
