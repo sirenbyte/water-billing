@@ -72,7 +72,7 @@ public class QrService {
 
     public ResponseEntity<?> pay(UUID contractId) {
         Contract contract = contractRepository.findById(contractId).orElseThrow(()->new RuntimeException("Contract not found"));
-        contract.setPayStatus("Успешно");
+        contract.setPayStatus("SUCCESS");
         return ResponseEntity.ok(contractRepository.save(contract));
     }
 

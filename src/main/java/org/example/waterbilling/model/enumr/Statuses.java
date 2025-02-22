@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public enum Statuses {
-    WAIT("В ожиданий"),
+    WAITING("В ожиданий"),
     SUCCESS( "Успешно"),
     REJECT( "Отказ");
 

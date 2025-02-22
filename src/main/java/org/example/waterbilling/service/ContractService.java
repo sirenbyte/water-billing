@@ -82,11 +82,8 @@ public class ContractService {
 
     public ResponseEntity<?> action(UUID id, String action){
         Contract contract = contractRepository.findById(id).orElse(null);
-        if(action.equals("SUCCESS")){
-            contract.setWaterStatus("Успешно");
-        }else {
-            contract.setWaterStatus("Отказано");
-        }
+        contract.setWaterStatus(action);
+        contractRepository.save(contract);
         return ResponseEntity.ok(contract);
     }
 
@@ -120,6 +117,9 @@ public class ContractService {
         contract.setValue(String.valueOf(value.get("value")));
         contract.setFixedAt((LocalDateTime) value.get("fixedAt"));
         contract.setCanalId(id);
+        contract.setCreatedAt(LocalDateTime.now());
+        contract.setWaterStatus("WAITING");
+        contract.setPayStatus("WAITING");
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         contract.setUserId(userRepository.findByEmail(login).getId());
         return ResponseEntity.ok(contractRepository.save(contract));
@@ -127,7 +127,8 @@ public class ContractService {
 
     public ResponseEntity<?> pay(UUID id, CardDto dto){
         Contract contract = contractRepository.findById(id).orElse(null);
-        contract.setPayStatus("Оплачено");
+        contract.setPayStatus("SUCCESS");
+        contractRepository.save(contract);
         return ResponseEntity.ok(contract);
     }
 
