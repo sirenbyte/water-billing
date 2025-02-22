@@ -10,5 +10,6 @@ public interface AuthService {
     ResponseEntity<?> getCurrentUser();
     ResponseEntity<?> create(UserDto dto);
     ResponseEntity<?> userContracts();
+    ResponseEntity<?> types();
 
 }

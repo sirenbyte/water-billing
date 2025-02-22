@@ -5,8 +5,10 @@ import org.example.waterbilling.config.jwt.JwtUtil;
 import org.example.waterbilling.model.dto.AuthRequest;
 import org.example.waterbilling.model.dto.UserDto;
 import org.example.waterbilling.model.entity.User;
+import org.example.waterbilling.model.enumr.UserTypes;
 import org.example.waterbilling.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -76,6 +78,11 @@ public class AuthServiceImpl implements AuthService{
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email);
         return contractService.getByClientId(user.getId());
+    }
+
+    @Override
+    public ResponseEntity<?> types() {
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(UserTypes.getAll());
     }
 
     private Map<String,String> toDto(User user){

@@ -38,7 +38,7 @@ public class StatisticService {
         Map<String,Long> user = userRepository.findAll().stream().filter(it->it.getPosition()!=null).collect(Collectors.groupingBy(User::getPosition,Collectors.counting()));
         Map<String,Object> map = new HashMap<>();
         user.forEach((k,v)->{
-            map.put("type",k);
+            map.put("name",k);
             map.put("count",v);
         });
         result.put("userList",map);

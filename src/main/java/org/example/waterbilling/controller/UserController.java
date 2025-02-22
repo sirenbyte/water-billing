@@ -27,4 +27,9 @@ public class UserController {
     public ResponseEntity<?> getCurrentUserContracts() {
         return userService.userContracts();
     }
+
+    @GetMapping("/types")
+    public ResponseEntity<?> getTypes() {
+        return userService.userContracts();
+    }
 }
