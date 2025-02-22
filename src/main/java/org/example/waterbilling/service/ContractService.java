@@ -1,5 +1,8 @@
 package org.example.waterbilling.service;
 
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -10,10 +13,12 @@ import org.example.waterbilling.model.dto.ReportDynamicDto;
 import org.example.waterbilling.model.entity.Canal;
 import org.example.waterbilling.model.entity.Contract;
 import org.example.waterbilling.model.entity.User;
+import org.example.waterbilling.model.enumr.Statuses;
 import org.example.waterbilling.repository.CanalRepository;
 import org.example.waterbilling.repository.ContractRepository;
 import org.example.waterbilling.repository.UserRepository;
 import org.example.waterbilling.service.script.AnnotationScript;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,16 +108,17 @@ public class ContractService {
         return ResponseEntity.ok(contracts);
     }
 
-    public ResponseEntity<?> changeTariff(UUID id,Float tariff){
+    public ResponseEntity<?> changeTariff(UUID id,Map<String,Object> tariff){
         Contract contract = contractRepository.findById(id).orElse(null);
-        contract.setTariff(String.valueOf(tariff));
+        contract.setTariff(String.valueOf(tariff.get("tariff")));
         contractRepository.save(contract);
         return ResponseEntity.ok(contract);
     }
 
-    public ResponseEntity<?> createContract(UUID id,Float value){
+    public ResponseEntity<?> createContract(UUID id,Map<String,String> value){
         Contract contract = new Contract();
-        contract.setValue(String.valueOf(value));
+        contract.setValue(String.valueOf(value.get("value")));
+        contract.setFixedAt(LocalDateTime.parse((value.get("fixedAt"))));
         contract.setCanalId(id);
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         contract.setUserId(userRepository.findByEmail(login).getId());
@@ -131,6 +138,8 @@ public class ContractService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outputStream));
         Document document = new Document(pdfDoc);
+        document.setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA));
+
 
         document.add(new Paragraph("Фискальный чек"));
         document.add(new Paragraph("ID: " + contractId));
@@ -145,5 +154,25 @@ public class ContractService {
 
         document.close();
         return mediaFileService.uploadFile(new MockMultipartFile("receipt.pdf", "receipt.pdf", "application/pdf", outputStream.toByteArray()));
+    }
+
+    public ResponseEntity<?> getById(UUID id) throws IOException {
+        Contract contract = contractRepository.findById(id).orElse(null);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", contract.getId());
+        map.put("fullName", getFullName(contract.getUserId()));
+        map.put("canalId", getCanalName(contract.getCanalId()));
+        map.put("createdAt", contract.getCreatedAt());
+        map.put("fixedAt", contract.getFixedAt());
+        map.put("payStatus", contract.getPayStatus());
+        map.put("waterStatus", contract.getWaterStatus());
+        map.put("tariff", contract.getTariff());
+        map.put("price", contract.getPrice());
+        map.put("value", contract.getValue());
+        return ResponseEntity.ok(map);
+    }
+
+    public ResponseEntity<?> statuses(){
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(Statuses.getAll());
     }
 }

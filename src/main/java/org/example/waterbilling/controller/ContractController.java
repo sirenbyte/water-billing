@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/contract")
+@RequestMapping("/api/contract")
 @AllArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 36000,allowCredentials = "false")
 public class ContractController {
@@ -34,6 +35,11 @@ public class ContractController {
         return contractService.getTableData(ReportDynamicDto.builder().build());
     }
 
+    @GetMapping("/{contractId}")
+    public ResponseEntity<?> getContractById(@PathVariable UUID contractId) throws IOException {
+        return contractService.getById(contractId);
+    }
+
     @PostMapping("/action")
     public ResponseEntity<?> action(@RequestParam UUID contractId,@RequestParam String action){
         return contractService.action(contractId,action);
@@ -45,23 +51,28 @@ public class ContractController {
     }
 
     @PostMapping("/change-tariff/{contractId}")
-    public ResponseEntity<?> changeTariff(@PathVariable UUID contractId,@RequestParam Float tariff){
+    public ResponseEntity<?> changeTariff(@PathVariable UUID contractId,@RequestBody Map<String,Object> tariff){
         return contractService.changeTariff(contractId,tariff);
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestParam UUID canalId, @RequestParam Float value){
+    public ResponseEntity<?> create(@RequestParam UUID canalId, @RequestParam Map<String,String> value){
         return contractService.createContract(canalId,value);
     }
 
     @PostMapping("/pay")
-    public ResponseEntity<?> pay(@RequestParam UUID contract, @RequestBody CardDto dto){
-        return contractService.pay(contract,dto);
+    public ResponseEntity<?> pay(@RequestParam UUID contractId, @RequestBody CardDto dto){
+        return contractService.pay(contractId,dto);
     }
 
     @GetMapping("/receipt")
-    public ResponseEntity<?> pay(@RequestParam UUID contract) throws IOException {
-        return contractService.generateReceipt(contract);
+    public ResponseEntity<?> pay(@RequestParam UUID contractId) throws IOException {
+        return contractService.generateReceipt(contractId);
+    }
+
+    @GetMapping("/statuses")
+    public ResponseEntity<?> payStatus() throws IOException {
+        return contractService.statuses();
     }
 }
 

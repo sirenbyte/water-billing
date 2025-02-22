@@ -7,13 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @AllArgsConstructor
 public class UserController {
     private final AuthService userService;
 
 
-    @GetMapping("/current-user")
+    @GetMapping("/current")
     public ResponseEntity<?> getCurrentUser() {
         return userService.getCurrentUser();
     }
@@ -21,5 +21,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody UserDto dto) {
         return userService.create(dto);
+    }
+
+    @GetMapping("/contracts")
+    public ResponseEntity<?> getCurrentUserContracts() {
+        return userService.userContracts();
     }
 }

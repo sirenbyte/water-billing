@@ -27,6 +27,7 @@ public class AuthServiceImpl implements AuthService{
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ContractService contractService;
 
     @Override
     public ResponseEntity<?> generateToken(AuthRequest dto) {
@@ -68,6 +69,13 @@ public class AuthServiceImpl implements AuthService{
         user.setBin(dto.getBin());
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(toDto(user));
+    }
+
+    @Override
+    public ResponseEntity<?> userContracts() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email);
+        return contractService.getByClientId(user.getId());
     }
 
     private Map<String,String> toDto(User user){

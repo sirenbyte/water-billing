@@ -9,5 +9,6 @@ public interface AuthService {
     ResponseEntity<?> generateToken(AuthRequest authRequest);
     ResponseEntity<?> getCurrentUser();
     ResponseEntity<?> create(UserDto dto);
+    ResponseEntity<?> userContracts();
 
 }

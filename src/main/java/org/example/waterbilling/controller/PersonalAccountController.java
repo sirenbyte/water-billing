@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/personal-account")
+@RequestMapping("/api/personal-account")
 @AllArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 36000,allowCredentials = "false")
 public class PersonalAccountController {

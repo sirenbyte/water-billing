@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/canal")
+@RequestMapping("/api/canal")
 @AllArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 36000,allowCredentials = "false")
 public class CanalController {
