@@ -61,6 +61,7 @@ public class ContractService {
                     map.put("waterStatus", contract.getWaterStatus());
                     map.put("tariff", contract.getTariff());
                     map.put("price", contract.getPrice());
+                    map.put("volume", contract.getValue());
                     return map;
                 }));
     }
@@ -105,9 +106,9 @@ public class ContractService {
         return ResponseEntity.ok(contracts);
     }
 
-    public ResponseEntity<?> changeTariff(UUID id,Map<String,Object> tariff){
+    public ResponseEntity<?> changeTariff(UUID id,Float tariff){
         Contract contract = contractRepository.findById(id).orElse(null);
-        contract.setTariff(String.valueOf(tariff.get("tariff")));
+        contract.setTariff(String.valueOf(tariff));
         contractRepository.save(contract);
         return ResponseEntity.ok(contract);
     }
