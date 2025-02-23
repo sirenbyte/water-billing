@@ -6,6 +6,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class ContractDto {
-    private String value;
+    private String volume;
     private LocalDateTime fixedAt;
 }

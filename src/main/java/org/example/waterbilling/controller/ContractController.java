@@ -58,8 +58,8 @@ public class ContractController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestParam UUID canalId, @RequestParam ContractDto dto){
-        return contractService.createContract(canalId,Map.of("value",dto.getValue(),"fixedAt",dto.getFixedAt()));
+    public ResponseEntity<?> create(@RequestParam UUID canalId, @RequestBody ContractDto dto){
+        return contractService.createContract(canalId,Map.of("volume",dto.getVolume(),"fixedAt",dto.getFixedAt()));
     }
 
     @PostMapping("/pay")
