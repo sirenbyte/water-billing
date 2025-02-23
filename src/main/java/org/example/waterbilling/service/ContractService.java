@@ -110,6 +110,7 @@ public class ContractService {
     public ResponseEntity<?> changeTariff(UUID id,Float tariff){
         Contract contract = contractRepository.findById(id).orElse(null);
         contract.setTariff(String.valueOf(tariff));
+        contract.setPrice(String.valueOf(tariff*Float.parseFloat(contract.getValue())));
         contractRepository.save(contract);
         return ResponseEntity.ok(contract);
     }
@@ -153,7 +154,7 @@ public class ContractService {
         document.add(new Paragraph("Объем: " + contract.getValue()));
         document.add(new Paragraph("Статус оплаты: " + contract.getPayStatus()));
         document.add(new Paragraph("Статус подачи воды: " + contract.getWaterStatus()));
-        document.add(new Paragraph("Итого: " + (Float.parseFloat(contract.getPrice())*Float.parseFloat(contract.getTariff())) + " KZT"));
+        document.add(new Paragraph("Итого: " + (Float.parseFloat(contract.getValue())*Float.parseFloat(contract.getTariff())) + " KZT"));
 
         document.close();
         return mediaFileService.uploadFile(new MockMultipartFile("receipt.pdf", "receipt.pdf", "application/pdf", outputStream.toByteArray()));
