@@ -100,7 +100,7 @@ public class ContractService {
             map.put("waterStatus", contract.getWaterStatus());
             map.put("tariff", contract.getTariff());
             map.put("price", contract.getPrice());
-            map.put("value", contract.getValue());
+            map.put("volume", contract.getValue());
             return map;
         }).collect(Collectors.toList());
         return ResponseEntity.ok(contracts);
@@ -115,7 +115,7 @@ public class ContractService {
 
     public ResponseEntity<?> createContract(UUID id,Map<String,Object> value){
         Contract contract = new Contract();
-        contract.setValue(String.valueOf(value.get("value")));
+        contract.setValue(String.valueOf(value.get("volume")));
         contract.setFixedAt((LocalDateTime) value.get("fixedAt"));
         contract.setCanalId(id);
         contract.setCreatedAt(LocalDateTime.now());

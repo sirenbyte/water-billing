@@ -54,7 +54,7 @@ public class ContractController {
 
     @PostMapping("/change-tariff/{contractId}")
     public ResponseEntity<?> changeTariff(@PathVariable UUID contractId,@RequestBody ChangeTariffDto tariff){
-        return contractService.changeTariff(contractId,Map.of("tariff",tariff));
+        return contractService.changeTariff(contractId,tariff.getTariff());
     }
 
     @PostMapping
