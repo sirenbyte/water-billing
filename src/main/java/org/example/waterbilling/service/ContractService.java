@@ -46,6 +46,7 @@ public class ContractService {
         List<Map<String, String>> result = AnnotationScript.getFieldsFromClass(Contract.class);
         result.add(Map.of("accessor","fullName","title","ФИО"));
         result.add(Map.of("accessor","volume","title","Объем"));
+        result.add(Map.of("accessor","canalName","title","Канал"));
         return ResponseEntity.ok(result);
     }
 
@@ -55,7 +56,7 @@ public class ContractService {
                     Map<String, Object> map = new HashMap<>();
                     map.put("id", contract.getId());
                     map.put("fullName", getFullName(contract.getUserId()));
-                    map.put("canalId", getCanalName(contract.getCanalId()));
+                    map.put("canalName", getCanalName(contract.getCanalId()));
                     map.put("createdAt", contract.getCreatedAt());
                     map.put("fixedAt", contract.getFixedAt());
                     map.put("payStatus", contract.getPayStatus());
@@ -94,7 +95,7 @@ public class ContractService {
             Map<String, Object> map = new HashMap<>();
             map.put("id", contract.getId());
             map.put("fullName", getFullName(contract.getUserId()));
-            map.put("canalId", getCanalName(contract.getCanalId()));
+            map.put("canalName", getCanalName(contract.getCanalId()));
             map.put("createdAt", contract.getCreatedAt());
             map.put("fixedAt", contract.getFixedAt());
             map.put("payStatus", contract.getPayStatus());
