@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService{
         user.setFirstname(dto.getFirstname());
         user.setLastname(dto.getLastname());
         user.setFathersname(dto.getFathersname());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setPassword(passwordEncoder.encode("saimaN320@"));
         user.setPersonalAccountNumber(dto.getPersonalAccountNumber());
         user.setIin(dto.getIin());
         user.setBin(dto.getBin());
